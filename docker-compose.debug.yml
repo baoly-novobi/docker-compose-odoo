@@ -17,9 +17,11 @@ services:
       - db
     ports:
       - "8069:8069"
-    command: bash -c "$${PYTHON_PATH} $${START_ODOO} $${ODOO_PARAM} && tail -f /dev/null"
+      - "8888:8888"
+    command: bash -c "$${PYTHON_PATH} $${DEBUG_ODOO} $${START_ODOO} $${ODOO_PARAM} && tail -f /dev/null"
     environment:
       PYTHON_PATH: "/usr/bin/python3"
+      DEBUG_ODOO: "-m debugpy --listen 0.0.0.0:8888"
       # START_ODOO: "/opt/odoo/odoo/odoo-bin -c /opt/odoo/<repo_name>/odoo.conf"
       ODOO_PARAM: "-d 16"
     volumes:
