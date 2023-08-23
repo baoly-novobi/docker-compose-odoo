@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y \
         git \
         ipython
 
-COPY python3-requirements.txt /etc/
-RUN pip3 install -r /etc/python3-requirements.txt
+COPY requirements.txt /etc/
+RUN pip3 install -r /etc/requirements.txt
 
 # USER odoo
