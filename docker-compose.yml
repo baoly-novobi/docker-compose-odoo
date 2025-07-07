@@ -1,27 +1,27 @@
-version: '3'
-
 services:
   db:
-    # image: postgres:14
+    image: postgres:17  # Update if needed
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=odoo
     volumes:
-        - postgresql_data:/var/lib/postgresql/data
+      - postgresql_data:/var/lib/postgresql/data
     # network_mode: host
 
   odoo:
-    # image: build image before compose
+    build: ./build
     depends_on:
       - db
     ports:
       - "8069:8069"
-    command: bash -c "$${PYTHON_PATH} $${START_ODOO} $${ODOO_PARAM} && tail -f /dev/null"
+      - "8888:8888"
+    command: bash -c "$${PYTHON_PATH} $${DEBUG_ODOO} $${START_ODOO} $${ODOO_PARAM} && tail -f /dev/null"
+    # command: tail -f /dev/null
     environment:
       PYTHON_PATH: "/usr/bin/python3"
-      # START_ODOO: "/opt/odoo/odoo/odoo-bin -c /opt/odoo/<repo_name>/odoo.conf"
-      ODOO_PARAM: "-d 16"
+      START_ODOO: "/opt/odoo/odoo/odoo-bin -c /opt/odoo/<project_repo>/odoo.conf"
+      ODOO_PARAM: ""
     volumes:
       - ../:/opt/odoo
       - odoo_data:/home/odoo/.local/share/Odoo
